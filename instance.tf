@@ -73,6 +73,9 @@ resource "aws_instance" "web-server" {
               sudo usermod -aG docker ubuntu
  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose
+              git clone https://github.com/Beknazar007/five-s-task-for-diploma.git
+              cd five-s-task-for-diploma
+              docker-compose up
               EOF
 
   tags = {
@@ -90,7 +93,7 @@ resource "aws_lb" "web-server-lb" {
 
 resource "aws_lb_target_group" "web-server-tg" {
   name     = "web-server-tg"
-  port     = 3000
+  port     = 80
   protocol = "HTTP"
   vpc_id   = module.vpc.vpc_id # Specify your VPC ID
 }
@@ -127,7 +130,7 @@ resource "aws_lb_listener" "web-server-https-listener" {
 resource "aws_lb_target_group_attachment" "web-server-tg-attachment" {
   target_group_arn = aws_lb_target_group.web-server-tg.arn
   target_id        = aws_instance.web-server.id
-  port             = 3000
+  port             = 80
 }
 resource "tls_private_key" "ssl" {
   algorithm = "RSA"
