@@ -8,5 +8,5 @@ services:
 
   service2:
     build:
-      context: ./frontend-awesome-cat
+      context: ./frontend-awesome-cats
     container_name: frontend
